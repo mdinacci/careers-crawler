@@ -1,0 +1,1 @@
+{"rows":[{"c":[{"v":"Local"},{"v":650}]},{"c":[{"v":"Remote"},{"v":5}]}],"cols":[{"label":"Remote","id":"remote","type":"number"},{"label":"Local","id":"local","type":"number"}]}

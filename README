@@ -1,0 +1,8 @@
+Careers Crawler
+
+Scrape the contents of careers.stackoverflow.com and make pretty graphs using the Google Visualization API.
+Just run script.rb, it will generate json files ready to be fed to the google visualization api. 
+See html for examples.
+
+Totally in alpha stage, the pie graph doesn't work yet and the most interesting viz are yet to come.
+
