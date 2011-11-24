@@ -16,6 +16,9 @@ switch($visualizationType) {
 	case "remotevslocal":
 		$jsonfile = "./json/remoteVSlocal.json";
 	break;
+	case "jobsonmap":
+		$jsonfile = "./json/jobsonmap.json";
+	break;
 	default:
 	break;	
 }

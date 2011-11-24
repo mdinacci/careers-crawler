@@ -1,1 +1,1 @@
-{"rows":[{"c":[{"v":"Local"},{"v":650}]},{"c":[{"v":"Remote"},{"v":5}]}],"cols":[{"label":"Remote","id":"remote","type":"number"},{"label":"Local","id":"local","type":"number"}]}
+{"rows":[{"c":[{"v":"Local"},{"v":693}]},{"c":[{"v":"Remote"},{"v":72}]}],"cols":[{"label":"key","id":"key","type":"string"},{"label":"value","id":"value","type":"number"}]}

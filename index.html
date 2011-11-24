@@ -1,4 +1,5 @@
 
+
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -37,11 +38,11 @@
 		    </script>
 		
 	<script type='text/javascript'>
-    	google.load('visualization', '1');
+	google.load("visualization", "1", {packages:["corechart"]});
         google.setOnLoadCallback(drawVisualizations);
 		
         function drawVisualizations() {
-			drawJobsByTagCloud();
+			//drawJobsByTagCloud();
 			drawJobsRemoteVsLocal();
 			//drawJobsByTagCumulus();
 			
@@ -50,7 +51,7 @@
 
 		function fetchData(vizURL) {
 			return $.ajax({
-					  type: "GET",
+				  type: "GET",
 			          url: "proxy.php?v=" + vizURL,
 			          dataType:"json",
 			          async: false
@@ -64,7 +65,7 @@
 		function drawJobsRemoteVsLocal() {
 			var data = new google.visualization.DataTable(fetchData('remotevslocal'));
 			var visualization = new google.visualization.PieChart(document.getElementById('remote_vs_local_chart'));
-			visualization.draw(data, {is_3D:true});
+			visualization.draw(data, {title:"Remote VS Local", is3D:true});
 		}
 		
 		function drawJobsByTagCumulus() {
@@ -74,6 +75,7 @@
 		}
 		
 		function drawJobsByTagCloud() {	
+			//document.getElementById('error').innerHTML = fetchData('tagcloud');
 			var data = new google.visualization.DataTable(fetchData('tagcloud'))
 			var visualization = new TermCloud(document.getElementById("tag_chart_cloud"));
 			visualization.draw(data, null);
@@ -87,17 +89,8 @@
 </head>
 <body>
 	<div align="center">
-		<div align="center">
-			<ul class="buttonGroup">
-				<li id="cumulus_li" >Pretty</li>
-				<li id="cloud_li" class="selected">Useful</li>
-			</ul>
-		</div>
-		<span id="tag_chart_cloud"></span>
 		<span id="tag_chart_cumulus"></span>
-
-		<p>Bla blabl remote vs local/<p>
-
+		<span id="tag_chart_cloud"></span>
 		<span id="remote_vs_local_chart"></span>
 	</div>
 </body>

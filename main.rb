@@ -1,20 +1,3 @@
-#!/usr/bin/env ruby -w
-
-# Copyright 2011 Marco Dinacci <marco.dinacci@gmail.com> / www.intransitione.com
-# 
-# Hi, this program reads data from the careers.stackoverflow.com website and 
-# try to make sense of it with the aid of some visualizations. 
-#
-# You are free to do what you want with it except pretend that you wrote it. 
-# If you redistribute it, keep the copyright line above.
-#
-# I've written it in a couple of days in order to:
-# - learn Ruby
-# - be accepted on careers.stackoverflow.com 
-# - increase the chances of finding a *good* job
-# - killing time because my client is not paying me for the iPhone app I'm developing
-#   and I generally don't work for free.
-
 require 'rubygems'
 require 'sinatra'
 require 'job'

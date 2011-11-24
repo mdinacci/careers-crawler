@@ -29,6 +29,10 @@ class DefaultSpiderConfiguration
   def self.tags
     return ".//a[@class='post-tag']/text()"
   end
+
+  def self.description
+    return ".//p[@class='description']/text()"
+  end
 end
 
 =begin
@@ -54,6 +58,8 @@ class StackOverflowSpider
         locations = jobElement.xpath(@config.location).to_s
         # Remove annoying &nbsp; and split string to obtain an array of locations
         job.locations = locations.gsub!(/(&nbsp;|\s)+/, " ").split(';')
+
+        job.description = jobElement.xpath(@config.description).to_s
 
         jobs.push(job)
       end

@@ -10,19 +10,18 @@ class Job
     end
     
     def to_s
-        "#{@title} - #{@location} (#{@score}) \n #{@description} \n #{@tags}\n"
+        "#{@title} - #{@locations} (#{@score}) \n #{@description} \n #{@tags}\n"
     end
 
     def telecommute?
         # Return true whether the string 'telecommut' or 'remote' is contained
         # either in the title or the description
         canTelecommute = false
-        
+
         # Search in title
         if not @title.nil?
             titleDown = @title.downcase
-            canTelecommute = titleDown.index("telecommut") ||
-                             titleDown.index("remote")
+            canTelecommute = !titleDown.index("telecommut").nil?
         end
         
         # No need to search in description if variable is already true
@@ -30,11 +29,19 @@ class Job
             return canTelecommute
         end
 
-        # If not found in title search in description
+        if not @locations.nil?
+            locationsDown = @locations.join.downcase
+            canTelecommute = !locationsDown.index("telecommut").nil?
+        end
+
+        if canTelecommute 
+            return canTelecommute
+        end
+
+        # If not found in title nor in location search in description
         if not @description.nil?
             descriptionDown = @description.downcase
-            canTelecommute = descriptionDown.index("telecommut") ||
-                             descriptionDown.index("remote")
+            canTelecommute = !descriptionDown.index("telecommut").nil? 
         end
         
         return canTelecommute
