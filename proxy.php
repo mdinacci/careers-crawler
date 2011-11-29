@@ -1,5 +1,5 @@
 <?php
-define(SERVER, "http://95.154.250.249:4567/careers");
+//define(SERVER, "http://95.154.250.249:4567/careers");
 
 $visualizationType = $_GET["v"];
 

@@ -1,21 +1,33 @@
+# Copyright 2011 Marco Dinacci <marco.dinacci@gmail.com> / www.intransitione.com
+# 
+# Hi, this program reads jobs listings from the careers.stackoverflow.com website and 
+# dump it on a file. It then read back the data and output JSON files ready to be 
+# used with the Google Visualization API.
+#
+# You are free to do what you want with it except pretend that you wrote it. 
+# If you redistribute it, keep the copyright line above.
+#
+# I've written it in a couple of days because/in order to:
+# - learn Ruby, play some more with Javascript.
+# - I like to "see" data
+# - increase the chances of finding a *good* job
+
+# This module is responsible of storing and loading the jobs data on disk.
+
 module ObjectStore
   
 require 'zlib'
 
   # Store an object as a gzipped file to disk
-  # ObjectStore::store hash, 'hash.stash.gz'
-  # ObjectStore.store hash, 'hash.stash', :gzip => false
   def store obj, file_name, options={}
-    marshal_dump = Marshal.dump(obj)
-    file = File.new(file_name,'w')
-    file = Zlib::GzipWriter.new(file) unless options[:gzip] == false
-    file.write marshal_dump
-    file.close
+    f = File.new(file_name,'w')
+    f = Zlib::GzipWriter.new(f) unless options[:gzip] == false
+    f.write Marshal.dump(obj)
+    f.close
     return obj
   end
   
   # Read a marshal dump from file and load it as an object
-  # Ex. hash = ObjectStore.get 'hash.dump.gz'
   def load file_name
     begin
       file = Zlib::GzipReader.open(file_name)

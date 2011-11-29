@@ -1,3 +1,19 @@
+# Copyright 2011 Marco Dinacci <marco.dinacci@gmail.com> / www.intransitione.com
+# 
+# Hi, this program reads jobs listings from the careers.stackoverflow.com website and 
+# dump it on a file. It then read back the data and output JSON files ready to be 
+# used with the Google Visualization API.
+#
+# You are free to do what you want with it except pretend that you wrote it. 
+# If you redistribute it, keep the copyright line above.
+#
+# I've written it in a couple of days because/in order to:
+# - learn Ruby, play some more with Javascript.
+# - I like to "see" data
+# - increase the chances of finding a *good* job
+
+# This module contains the Job related classes.
+
 module Job
 
 class Job
@@ -14,37 +30,19 @@ class Job
     end
 
     def telecommute?
-        # Return true whether the string 'telecommut' or 'remote' is contained
-        # either in the title or the description
-        canTelecommute = false
+        # Return true whether the string 'telecommut' (could be telecommutE or telecommutING) 
+        # is contained in any of the fields
+        can_telecommute = false
 
-        # Search in title
-        if not @title.nil?
-            titleDown = @title.downcase
-            canTelecommute = !titleDown.index("telecommut").nil?
+        [@title,@locations,@description,@locations].flatten.each do |field|
+            can_telecommute = !field.downcase.index("telecommut").nil? 
+            if can_telecommute
+                break
+            end
         end
+
         
-        # No need to search in description if variable is already true
-        if canTelecommute 
-            return canTelecommute
-        end
-
-        if not @locations.nil?
-            locationsDown = @locations.join.downcase
-            canTelecommute = !locationsDown.index("telecommut").nil?
-        end
-
-        if canTelecommute 
-            return canTelecommute
-        end
-
-        # If not found in title nor in location search in description
-        if not @description.nil?
-            descriptionDown = @description.downcase
-            canTelecommute = !descriptionDown.index("telecommut").nil? 
-        end
-        
-        return canTelecommute
+        return can_telecommute
     end
 end
 

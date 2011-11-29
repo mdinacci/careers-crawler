@@ -3,17 +3,16 @@
 # Copyright 2011 Marco Dinacci <marco.dinacci@gmail.com> / www.intransitione.com
 # 
 # Hi, this program reads jobs listings from the careers.stackoverflow.com website and 
-# dump it on a file.
+# dump it on a file. It then read back the data and output JSON files ready to be 
+# used with the Google Visualization API.
 #
 # You are free to do what you want with it except pretend that you wrote it. 
 # If you redistribute it, keep the copyright line above.
 #
-# I've written it in a couple of days in order to:
-# - learn Ruby
-# - be accepted on careers.stackoverflow.com 
+# I've written it in a couple of days because/in order to:
+# - learn Ruby, play some more with Javascript.
+# - I like to "see" data
 # - increase the chances of finding a *good* job
-# - killing time because my client is not paying me for the iPhone app I'm developing
-#   and I generally don't work for free.
 
 require 'rubygems'
 require 'job'
@@ -21,6 +20,7 @@ require 'json'
 require 'spider'
 require 'objectstore'
 require 'matrix'
+require 'pp'
 
 JOBS_DB = "jobs.dump.gz"
 
@@ -162,14 +162,41 @@ def jobsPerCountry jobs
   return data
 end
 
-def tagsGraph jobs
-  indexes = {"java"=>0,"c++"=>1,"c#"=>2,"javascript"=>3,"python"=>4,"ruby"=>5,"php"=>6}
-  rows = []
-  indexes.size.times {|x| rows.push []}
+def tagsGraph jobs, the_tags
+  nodes = {}
 
   jobs.each do |job| 
     tags = job.tags
+
+    keys = nodes.keys
+    tags.each do |tag|
+      if ! keys.include? tag
+        nodes[tag] = {}
+      end
+      links_keys = nodes[tag].keys
+      # array containing all the other tags
+      linked_tags = tags.reject {|x| x==tag}
+      linked_tags.each do |linked_tag|
+        if links_keys.include? linked_tag
+          nodes[tag][linked_tag] +=1
+        else
+          nodes[tag][linked_tag] = 1
+        end
+      end
+    end
   end
+
+  # debug stuff to test 
+  if the_tags[0] == "all"
+    pp nodes.sort
+  else
+    the_tags.each do |the_tag|
+      pp nodes[the_tag].sort
+    end
+  end
+  
+  return nodes
+
 end
 
 def writeJSON fileName, data
@@ -181,6 +208,11 @@ end
 
 # load jobs dump
 jobs = loadJobs
+
+# Generate all the JSON files with the data required by the visualizations
+
+data = tagsGraph jobs, ARGV
+writeJSON "json/tagsGraph.json", JSON.generate(data)
 
 data = tagsCumulus jobs, 0
 writeJSON "json/tagsCumulusJSON_full.json", JSON.generate(data)

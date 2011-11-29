@@ -1,3 +1,19 @@
+# Copyright 2011 Marco Dinacci <marco.dinacci@gmail.com> / www.intransitione.com
+# 
+# Hi, this program reads jobs listings from the careers.stackoverflow.com website and 
+# dump it on a file. It then read back the data and output JSON files ready to be 
+# used with the Google Visualization API.
+#
+# You are free to do what you want with it except pretend that you wrote it. 
+# If you redistribute it, keep the copyright line above.
+#
+# I've written it in a couple of days because/in order to:
+# - learn Ruby, play some more with Javascript.
+# - I like to "see" data
+# - increase the chances of finding a *good* job
+
+# This module contains the web crawler.
+
 module Spider
   
 require 'rubygems'
@@ -34,11 +50,6 @@ class DefaultSpiderConfiguration
     return ".//p[@class='description']/text()"
   end
 end
-
-=begin
-#SOURCE = "http://careers.stackoverflow.com/jobs?pg=0"
-SOURCE = "/Users/marco/Downloads/sourcecareers.html"
-=end
 
 class StackOverflowSpider
   def initialize config
