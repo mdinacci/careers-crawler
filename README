@@ -3,5 +3,3 @@ Careers Crawler
 Scrape the contents of careers.stackoverflow.com and make pretty graphs using the Google Visualization API.
 Just run runme.rb, it will generate json files ready to be fed to the google visualization api. 
 It requires nokogiri.
-
-I've the pie chart and the term cloud working, next will showing jobs on a map and a tags graph.

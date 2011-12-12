@@ -12,7 +12,7 @@
 # I've written it in a couple of days because/in order to:
 # - learn Ruby, play some more with Javascript.
 # - I like to "see" data
-# - increase the chances of finding a *good* job
+# - Increase the chances of finding a *good* job
 
 require 'rubygems'
 require 'job'
@@ -52,7 +52,7 @@ def tagsFrequencyMap jobs, minimumFrequency
     end
   end
   
-  # get rid of the tags that have only one occurrence
+  # get rid of the tags that have less than minimumFrequency occurrences
   if minimumFrequency > 0
     tagsFrequency = {}
     tagsOccurrences.each do |tag,occurrence|
@@ -162,31 +162,56 @@ def jobsPerCountry jobs
   return data
 end
 
-def tagsGraph jobs, the_tags
+def tagsGraph jobs
   nodes = {}
+  tagsMap = tagsFrequencyMap jobs, 3
+
+  tmp = tagsMap.sort_by {|k,v| v}.reverse
+  best_tags = []
+  tmp.each do |tag,number|
+    best_tags.push tag
+    if best_tags.length == 20:  
+      break
+    end
+  end
 
   jobs.each do |job| 
     tags = job.tags
-
     keys = nodes.keys
+
     tags.each do |tag|
-      if ! keys.include? tag
-        nodes[tag] = {}
+      if tag.strip == "html5"
+        tag = "html"
       end
-      links_keys = nodes[tag].keys
-      # array containing all the other tags
-      linked_tags = tags.reject {|x| x==tag}
-      linked_tags.each do |linked_tag|
-        if links_keys.include? linked_tag
-          nodes[tag][linked_tag] +=1
-        else
-          nodes[tag][linked_tag] = 1
+      # check that tag is  included in the tags map 
+      if best_tags.include? tag
+        # create a new hash for a new tag
+        if ! keys.include? tag
+          nodes[tag] = {}
+        end
+        links_keys = nodes[tag].keys
+        # array containing all the other tags
+        linked_tags = tags.reject {|x| x==tag}
+        linked_tags.each do |linked_tag|
+          if linked_tag.strip == "html5"
+            linked_tag = "html"
+          end
+          if links_keys.include? linked_tag
+            nodes[tag][linked_tag] +=1
+          else
+            nodes[tag][linked_tag] = 1
+          end
         end
       end
     end
   end
 
-  # debug stuff to test 
+  nodes.each do |tag, tags|
+    nodes[tag] = tags.sort_by {|k,v| v}.reverse[0..9]
+  end
+
+# debug stuff to test  
+=begin
   if the_tags[0] == "all"
     pp nodes.sort
   else
@@ -194,8 +219,9 @@ def tagsGraph jobs, the_tags
       pp nodes[the_tag].sort
     end
   end
-  
-  return nodes
+=end
+
+return nodes
 
 end
 
@@ -209,8 +235,14 @@ end
 # load jobs dump
 jobs = loadJobs
 
-# Generate all the JSON files with the data required by the visualizations
+#data = tagsGraph3 jobs
+#writeJSON "json/tagsGraph3.json", JSON.generate(data)
 
+data = tagsGraph jobs
+writeJSON "json/tagsGraph.json", JSON.generate(data)
+
+# Generate all the JSON files with the data required by the visualizations
+=begin
 data = tagsGraph jobs, ARGV
 writeJSON "json/tagsGraph.json", JSON.generate(data)
 
@@ -231,3 +263,4 @@ writeJSON "json/remoteVSlocal.json", JSON.generate(data)
 
 #data = jobsPerCountry
 #writeJSON "json/jobsPerCountry.json", JSON.generate(data)
+=end

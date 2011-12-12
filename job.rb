@@ -40,7 +40,6 @@ class Job
                 break
             end
         end
-
         
         return can_telecommute
     end
