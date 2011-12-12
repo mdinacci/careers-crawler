@@ -8,11 +8,6 @@
 #
 # You are free to do what you want with it except pretend that you wrote it. 
 # If you redistribute it, keep the copyright line above.
-#
-# I've written it in a couple of days because/in order to:
-# - learn Ruby, play some more with Javascript.
-# - I like to "see" data
-# - Increase the chances of finding a *good* job
 
 require 'rubygems'
 require 'job'
@@ -180,10 +175,11 @@ def tagsGraph jobs
     keys = nodes.keys
 
     tags.each do |tag|
+      # HACK combine html5 and html
       if tag.strip == "html5"
         tag = "html"
       end
-      # check that tag is  included in the tags map 
+      # check that tag is included in the tags map 
       if best_tags.include? tag
         # create a new hash for a new tag
         if ! keys.include? tag
@@ -193,6 +189,7 @@ def tagsGraph jobs
         # array containing all the other tags
         linked_tags = tags.reject {|x| x==tag}
         linked_tags.each do |linked_tag|
+          # HACK combine html5 and html
           if linked_tag.strip == "html5"
             linked_tag = "html"
           end
@@ -235,15 +232,9 @@ end
 # load jobs dump
 jobs = loadJobs
 
-#data = tagsGraph3 jobs
-#writeJSON "json/tagsGraph3.json", JSON.generate(data)
+# Generate all the JSON files with the data required by the visualizations
 
 data = tagsGraph jobs
-writeJSON "json/tagsGraph.json", JSON.generate(data)
-
-# Generate all the JSON files with the data required by the visualizations
-=begin
-data = tagsGraph jobs, ARGV
 writeJSON "json/tagsGraph.json", JSON.generate(data)
 
 data = tagsCumulus jobs, 0
@@ -263,4 +254,4 @@ writeJSON "json/remoteVSlocal.json", JSON.generate(data)
 
 #data = jobsPerCountry
 #writeJSON "json/jobsPerCountry.json", JSON.generate(data)
-=end
+

@@ -7,11 +7,6 @@
 # You are free to do what you want with it except pretend that you wrote it. 
 # If you redistribute it, keep the copyright line above.
 #
-# I've written it in a couple of days because/in order to:
-# - learn Ruby, play some more with Javascript.
-# - I like to "see" data
-# - increase the chances of finding a *good* job
-
 # This module contains the Job related classes.
 
 module Job

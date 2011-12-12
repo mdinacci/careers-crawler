@@ -7,11 +7,6 @@
 # You are free to do what you want with it except pretend that you wrote it. 
 # If you redistribute it, keep the copyright line above.
 #
-# I've written it in a couple of days because/in order to:
-# - learn Ruby, play some more with Javascript.
-# - I like to "see" data
-# - increase the chances of finding a *good* job
-
 # This module contains the web crawler.
 
 module Spider
@@ -64,7 +59,21 @@ class StackOverflowSpider
 
         job.title = jobElement.xpath(@config.title).to_s
         job.score = jobElement.xpath(@config.score).to_s.to_i
-        jobElement.xpath(@config.tags).each {|tag| job.tags.push(tag.to_s.downcase)}
+        #jobElement.xpath(@config.tags).each {|tag| job.tags.push(tag.to_s.downcase)}
+        jobElement.xpath(@config.tags).each do |tag| 
+          # refine a few tags that are semantically the same but have different text
+          tag = tag.to_s.downcase
+          if tag == "html5" || tag == "html4":
+            tag = "html" 
+          end
+          if tag == "rails" || tag == "ror":
+            tag = "ruby-on-rails" 
+          end
+          if tag == "css3":
+            tag = "css" 
+          end
+          job.tags.push(tag)
+        end
 
         locations = jobElement.xpath(@config.location).to_s
         # Remove annoying &nbsp; and split string to obtain an array of locations
