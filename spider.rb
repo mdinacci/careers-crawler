@@ -14,7 +14,7 @@ module Spider
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
-require 'job'
+require_relative 'job'
 
 class DefaultSpiderConfiguration
   def self.source
@@ -63,13 +63,13 @@ class StackOverflowSpider
         jobElement.xpath(@config.tags).each do |tag| 
           # refine a few tags that are semantically the same but have different text
           tag = tag.to_s.downcase
-          if tag == "html5" || tag == "html4":
+          if tag == "html5" || tag == "html4"
             tag = "html" 
           end
-          if tag == "rails" || tag == "ror":
+          if tag == "rails" || tag == "ror"
             tag = "ruby-on-rails" 
           end
-          if tag == "css3":
+          if tag == "css3"
             tag = "css" 
           end
           job.tags.push(tag)

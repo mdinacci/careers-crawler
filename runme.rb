@@ -10,12 +10,12 @@
 # If you redistribute it, keep the copyright line above.
 
 require 'rubygems'
-require 'job'
 require 'json'
-require 'spider'
-require 'objectstore'
 require 'matrix'
 require 'pp'
+require_relative 'objectstore'
+require_relative 'job'
+require_relative 'spider'
 
 JOBS_DB = "jobs.dump.gz"
 
@@ -165,7 +165,7 @@ def tagsGraph jobs
   best_tags = []
   tmp.each do |tag,number|
     best_tags.push tag
-    if best_tags.length == 20:  
+    if best_tags.length == 20 # take only the best 20
       break
     end
   end
@@ -206,17 +206,6 @@ def tagsGraph jobs
   nodes.each do |tag, tags|
     nodes[tag] = tags.sort_by {|k,v| v}.reverse[0..9]
   end
-
-# debug stuff to test  
-=begin
-  if the_tags[0] == "all"
-    pp nodes.sort
-  else
-    the_tags.each do |the_tag|
-      pp nodes[the_tag].sort
-    end
-  end
-=end
 
 return nodes
 
