@@ -9,6 +9,9 @@ switch($visualizationType) {
 	case "tagcumulus":
 		$jsonfile = "./json/tagsCumulusJSON_mini.json";
 		break;
+	case "tagcumulusfull":
+		$jsonfile = "./json/tagsCumulusJSON_full.json";
+		break;	
 	case "tagcloud":
 		$jsonfile = "./json/tagsCloudJSON_mini.json";
 		break;
