@@ -53,8 +53,12 @@ class StackOverflowSpider
   
   def crawl
     jobs = []
-    doc = Nokogiri::HTML(open(@config.source))
-    doc.xpath(@config.jobs).each do |jobElement|
+
+    for pagenum in 0..10
+      url = @config.source << "?pg=" << pagenum.to_s
+      doc = Nokogiri::HTML(open(url))
+      doc.xpath(@config.jobs).each do |jobElement|
+        
         job = Job::Job.new
 
         job.title = jobElement.xpath(@config.title).to_s
@@ -75,14 +79,17 @@ class StackOverflowSpider
           job.tags.push(tag)
         end
 
+
         locations = jobElement.xpath(@config.location).to_s
         # Remove annoying &nbsp; and split string to obtain an array of locations
         job.locations = locations.gsub!(/(&nbsp;|\s)+/, " ").split(';')
 
         job.description = jobElement.xpath(@config.description).to_s
 
+
         jobs.push(job)
       end
+    end
     
     return jobs
   end
