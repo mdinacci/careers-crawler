@@ -85,6 +85,17 @@ def tagsCloud jobs, minFrequency
   return data
 end
   
+def tagsCSV jobs, minFrequency
+  tagsMap = tagsFrequencyMap jobs, minFrequency
+  data = ""
+
+  tagsMap.each do |tag, occurrence|
+    data = data << "\"" << tag << "\", " << occurrence.to_s << "\n"
+  end
+
+  return data
+end
+
 def tagsCumulus jobs, minFrequency
   tagsMap = tagsFrequencyMap jobs, minFrequency
   
@@ -103,6 +114,7 @@ def tagsCumulus jobs, minFrequency
   min_occurrence = 1
   max_font_size = 30
   min_font_size = 10
+  counter = 0
   tagsMap.each do |tag, occurrence|
     size = (max_font_size * (occurrence - min_occurrence)) / (max_occurrence - min_occurrence)
 
@@ -113,6 +125,7 @@ def tagsCumulus jobs, minFrequency
                     ]
             }
     data["rows"].push(cells)
+    counter = counter + 1
   end
   
   return data
@@ -211,7 +224,7 @@ return nodes
 
 end
 
-def writeJSON fileName, data
+def writeFile fileName, data
   puts fileName
   f = File.new(fileName, "w")
   f.write(data)
@@ -224,23 +237,26 @@ jobs = loadJobs
 # Generate all the JSON files with the data required by the visualizations
 
 data = tagsGraph jobs
-writeJSON "json/tagsGraph.json", JSON.generate(data)
+writeFile "json/tagsGraph.json", JSON.generate(data)
 
 data = tagsCumulus jobs, 0
-writeJSON "json/tagsCumulusJSON_full.json", JSON.generate(data)
+writeFile "json/tagsCumulusJSON_full.json", JSON.generate(data)
 
-data = tagsCumulus jobs, 5
-writeJSON "json/tagsCumulusJSON_mini.json", JSON.generate(data)
+data = tagsCumulus jobs, 3
+writeFile "json/tagsCumulusJSON_mini.json", JSON.generate(data)
 
 data = tagsCloud jobs, 0
-writeJSON "json/tagsCloudJSON_full.json", JSON.generate(data)
+writeFile "json/tagsCloudJSON_full.json", JSON.generate(data)
 
 data = tagsCloud jobs, 5
-writeJSON "json/tagsCloudJSON_mini.json", JSON.generate(data)
+writeFile "json/tagsCloudJSON_mini.json", JSON.generate(data)
 
 data = remoteVSLocal jobs
-writeJSON "json/remoteVSlocal.json", JSON.generate(data)
+writeFile "json/remoteVSlocal.json", JSON.generate(data)
+
+data = tagsCSV jobs, 0
+writeFile "raw_data.csv", data
 
 #data = jobsPerCountry
-#writeJSON "json/jobsPerCountry.json", JSON.generate(data)
+#writeFile "json/jobsPerCountry.json", JSON.generate(data)
 
