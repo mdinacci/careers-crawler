@@ -18,15 +18,15 @@ require_relative 'job'
 
 class DefaultSpiderConfiguration
   def self.source
-    return "http://careers.stackoverflow.com/jobs?pg=0"
+    return "http://careers.stackoverflow.com/jobs"
   end
   
   def self.jobs
-    return "//div[@id='jobslist']/div[@class='listitem']"
+    return "//div[@class='list jobs']/div[@data-jobid]"
   end
   
   def self.title
-    return ".//a[@class='title']/@title"
+    return ".//a[@class='job-link']/@title"
   end
   
   def self.score 
@@ -38,7 +38,7 @@ class DefaultSpiderConfiguration
   end
   
   def self.tags
-    return ".//a[@class='post-tag']/text()"
+    return ".//a[@class='post-tag job-link']/text()"
   end
 
   def self.description
